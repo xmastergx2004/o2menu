@@ -23,20 +23,19 @@ export default function ProgressiveImage({
 }: ProgressiveImageProps) {
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
-    const [currentSrc, setCurrentSrc] = useState<string>("");
+    const [imageSrc, setImageSrc] = useState<string>("");
 
+    // Reset states when src changes - ensures each image is isolated
     useEffect(() => {
         setIsLoading(true);
         setHasError(false);
-
-        // Create a low-quality image URL (you can also create actual thumbnails)
-        // For now, we'll just use the regular image but with loading states
-        setCurrentSrc(src);
+        setImageSrc(src);
     }, [src]);
 
     const handleError = () => {
         setHasError(true);
         setIsLoading(false);
+        setImageSrc(""); // Clear the src to prevent showing wrong image
         if (onError) onError();
     };
 
@@ -44,7 +43,8 @@ export default function ProgressiveImage({
         setIsLoading(false);
     };
 
-    if (hasError) {
+    // Don't render Image component if there's an error or no src
+    if (hasError || !imageSrc) {
         return null;
     }
 
@@ -52,7 +52,8 @@ export default function ProgressiveImage({
         <>
             {isLoading && <ImageSkeleton />}
             <Image
-                src={currentSrc}
+                key={src} // Force new instance when src changes
+                src={imageSrc}
                 alt={alt}
                 fill={fill}
                 className={`${className} ${isLoading ? 'opacity-0 scale-105 blur-sm' : 'opacity-100 scale-100 blur-0'} transition-all duration-700 ease-out`}
