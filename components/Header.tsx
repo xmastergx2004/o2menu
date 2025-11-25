@@ -1,5 +1,6 @@
 import { FaArrowLeft } from "react-icons/fa6";
 import Image from "next/image";
+import { getAssetPath } from "@/lib/utils";
 
 interface HeaderProps {
     showBack?: boolean;
@@ -22,7 +23,7 @@ export default function Header({ showBack, onBack }: HeaderProps) {
                 <div className="flex items-center gap-4">
                     <div className="relative w-24 h-24 rounded-full overflow-hidden shadow-md border-2 border-white">
                         <Image
-                            src="/o2photos/o2coffeelogo.jpg"
+                            src={getAssetPath("/o2photos/o2coffeelogo.jpg")}
                             alt="O2 Coffee Logo"
                             fill
                             className="object-cover"
