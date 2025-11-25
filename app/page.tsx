@@ -1,22 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Header from "@/components/Header";
 import CategoryNav from "@/components/CategoryNav";
 import ProductCard from "@/components/ProductCard";
 import ProductModal from "@/components/ProductModal";
 import Footer from "@/components/Footer";
+import LoadingScreen from "@/components/LoadingScreen";
 import { menuData, MenuItem } from "@/data/menuData";
 
 export default function Home() {
-  const [activeCategory, setActiveCategory] = useState(menuData[0].category);
+  const [activeCategory, setActiveCategory] = useState("SICAK KAHVELER");
   const [selectedProduct, setSelectedProduct] = useState<MenuItem | null>(null);
   const [view, setView] = useState<'categories' | 'products'>('categories');
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    setIsLoaded(true);
-  }, []);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleCategorySelect = (category: string) => {
     setActiveCategory(category);
@@ -32,6 +29,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col max-w-md mx-auto bg-[#f8f9fa] shadow-2xl min-[450px]:my-8 min-[450px]:rounded-[32px] min-[450px]:overflow-hidden min-[450px]:h-[calc(100vh-4rem)] relative overflow-hidden">
+      {isLoading && <LoadingScreen onFinished={() => setIsLoading(false)} />}
+
       <Header showBack={view === 'products'} onBack={handleBack} />
 
       <div className="flex-1 relative overflow-hidden">
@@ -59,7 +58,7 @@ export default function Home() {
               {currentCategory?.category}
             </h2>
 
-            <div className={`grid grid-cols-2 gap-4 transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+            <div className="grid grid-cols-2 gap-4">
               {currentCategory?.items.map((item, index) => (
                 <ProductCard
                   key={index}
