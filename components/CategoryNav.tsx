@@ -1,5 +1,6 @@
 import { MenuCategory } from "@/data/menuData";
 import Image from "next/image";
+import { getAssetPath } from "@/lib/utils";
 
 interface CategoryNavProps {
     categories: MenuCategory[];
@@ -16,14 +17,14 @@ export default function CategoryNav({ categories, activeCategory, onSelectCatego
                         <button
                             onClick={() => onSelectCategory(cat.category)}
                             className={`relative flex flex-col items-center justify-center gap-3 w-full h-[140px] rounded-2xl font-semibold transition-all duration-300 shadow-md overflow-hidden group ${activeCategory === cat.category
-                                    ? "bg-[#2c3e50] text-white shadow-xl ring-4 ring-[#27ae60]/20 transform scale-[1.02]"
-                                    : "bg-white text-[#7f8c8d] border border-gray-100 hover:bg-gray-50 hover:shadow-lg hover:-translate-y-1"
+                                ? "bg-[#2c3e50] text-white shadow-xl ring-4 ring-[#27ae60]/20 transform scale-[1.02]"
+                                : "bg-white text-[#7f8c8d] border border-gray-100 hover:bg-gray-50 hover:shadow-lg hover:-translate-y-1"
                                 }`}
                         >
                             {cat.image ? (
                                 <>
                                     <Image
-                                        src={cat.image}
+                                        src={getAssetPath(cat.image)}
                                         alt={cat.category}
                                         fill
                                         className={`object-cover transition-transform duration-500 group-hover:scale-110 ${activeCategory === cat.category ? 'opacity-40' : 'opacity-100'}`}
