@@ -57,7 +57,7 @@ export default function Home() {
             <div className="grid grid-cols-2 gap-4">
               {currentCategory?.items.map((item, index) => (
                 <ProductCard
-                  key={index}
+                  key={`${activeCategory}-${item.name}-${index}`}
                   item={item}
                   category={activeCategory}
                   onClick={() => setSelectedProduct(item)}
