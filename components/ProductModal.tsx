@@ -2,7 +2,6 @@ import { MenuItem } from "@/data/menuData";
 import { FaImage, FaTimes } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { getAssetPath } from "@/lib/utils";
 
 interface ProductModalProps {
     item: MenuItem | null;
@@ -53,7 +52,7 @@ export default function ProductModal({ item, category, onClose }: ProductModalPr
                 <div className="w-full h-64 bg-gray-100 rounded-2xl mb-5 flex items-center justify-center text-4xl text-gray-300 relative overflow-hidden shadow-inner">
                     {item?.image && !imageError ? (
                         <Image
-                            src={getAssetPath(item.image)}
+                            src={item.image}
                             alt={item.name}
                             fill
                             className={objectFitClass}

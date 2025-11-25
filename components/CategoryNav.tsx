@@ -1,6 +1,5 @@
 import { MenuCategory } from "@/data/menuData";
 import Image from "next/image";
-import { getAssetPath } from "@/lib/utils";
 
 interface CategoryNavProps {
     categories: MenuCategory[];
@@ -24,7 +23,7 @@ export default function CategoryNav({ categories, activeCategory, onSelectCatego
                             {cat.image ? (
                                 <>
                                     <Image
-                                        src={getAssetPath(cat.image)}
+                                        src={cat.image}
                                         alt={cat.category}
                                         fill
                                         className={`object-cover transition-transform duration-500 group-hover:scale-110 ${activeCategory === cat.category ? 'opacity-40' : 'opacity-100'}`}

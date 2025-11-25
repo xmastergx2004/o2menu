@@ -2,7 +2,6 @@ import { MenuItem } from "@/data/menuData";
 import { FaMugHot } from "react-icons/fa6";
 import Image from "next/image";
 import { useState } from "react";
-import { getAssetPath } from "@/lib/utils";
 
 interface ProductCardProps {
     item: MenuItem;
@@ -25,7 +24,7 @@ export default function ProductCard({ item, category, onClick }: ProductCardProp
             <div className="w-full h-36 bg-gray-200 flex items-center justify-center text-gray-400 text-3xl relative overflow-hidden group">
                 {item.image && !imageError ? (
                     <Image
-                        src={getAssetPath(item.image)}
+                        src={item.image}
                         alt={item.name}
                         fill
                         className={`${objectFitClass} transition-transform duration-500 group-hover:scale-110`}
