@@ -12,9 +12,8 @@ interface ProductModalProps {
 export default function ProductModal({ item, category, onClose }: ProductModalProps) {
     const [isVisible, setIsVisible] = useState(false);
 
-    // Categories that need object-contain (long photos)
-    const containCategories = ["SOĞUK KAHVELER", "MILKSHAKE", "FROZEN", "SOFT İÇECEKLER"];
-    const objectFitClass = containCategories.includes(category) ? "contain" : "cover";
+    // Only cold drinks need object-contain, all others use cover
+    const objectFitClass = category === "SOĞUK KAHVELER" ? "contain" : "cover";
 
     useEffect(() => {
         if (item) {
