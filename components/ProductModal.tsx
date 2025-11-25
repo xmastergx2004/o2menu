@@ -1,8 +1,7 @@
 import { MenuItem } from "@/data/menuData";
 import { FaImage, FaTimes } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import Image from "next/image";
-import ImageSkeleton from "./ImageSkeleton";
+import ProgressiveImage from "./ProgressiveImage";
 
 interface ProductModalProps {
     item: MenuItem | null;
@@ -12,18 +11,14 @@ interface ProductModalProps {
 
 export default function ProductModal({ item, category, onClose }: ProductModalProps) {
     const [isVisible, setIsVisible] = useState(false);
-    const [imageError, setImageError] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
 
     // Categories that need object-contain (long photos)
     const containCategories = ["SOĞUK KAHVELER", "MILKSHAKE", "FROZEN", "SOFT İÇECEKLER"];
-    const objectFitClass = containCategories.includes(category) ? "object-contain" : "object-cover";
+    const objectFitClass = containCategories.includes(category) ? "contain" : "cover";
 
     useEffect(() => {
         if (item) {
             setIsVisible(true);
-            setImageError(false);
-            setIsLoading(true);
             document.body.style.overflow = 'hidden';
         } else {
             setIsVisible(false);
@@ -53,22 +48,13 @@ export default function ProductModal({ item, category, onClose }: ProductModalPr
                 </button>
 
                 <div className="w-full h-64 bg-gray-100 rounded-2xl mb-5 flex items-center justify-center text-4xl text-gray-300 relative overflow-hidden shadow-inner">
-                    {item?.image && !imageError ? (
-                        <>
-                            {isLoading && <ImageSkeleton />}
-                            <Image
-                                src={item.image}
-                                alt={item.name}
-                                fill
-                                className={`${objectFitClass} ${isLoading ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
-                                onError={() => {
-                                    setImageError(true);
-                                    setIsLoading(false);
-                                }}
-                                onLoad={() => setIsLoading(false)}
-                                unoptimized
-                            />
-                        </>
+                    {item?.image ? (
+                        <ProgressiveImage
+                            src={item.image}
+                            alt={item.name}
+                            objectFit={objectFitClass}
+                            priority={true}
+                        />
                     ) : (
                         <FaImage />
                     )}
