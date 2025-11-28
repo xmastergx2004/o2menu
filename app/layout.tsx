@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
-import RedirectHandler from "@/components/RedirectHandler";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -21,7 +20,6 @@ export default function RootLayout({
   return (
     <html lang="tr">
       <body className={`${outfit.variable} antialiased font-sans bg-[#f8f9fa]`}>
-        <RedirectHandler />
         {children}
       </body>
     </html>
