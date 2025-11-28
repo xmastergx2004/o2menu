@@ -111,6 +111,20 @@
             display: block;
         }
 
+        .success {
+            background: #efe;
+            color: #3c3;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .success.show {
+            display: block;
+        }
+
         .admin-panel {
             display: none;
         }
@@ -136,18 +150,18 @@
             margin-bottom: 15px;
         }
 
-        .btn-secondary {
-            background: #6c757d;
-            margin-top: 10px;
-        }
-
-        .btn-danger {
-            background: #dc3545;
-        }
-
         .logout-btn {
             background: #6c757d;
             margin-bottom: 20px;
+        }
+
+        code {
+            display: block;
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
         }
     </style>
 </head>
@@ -159,10 +173,11 @@
             <h1>O2 Menu Admin</h1>
             <p class="subtitle">Sign in to manage your menu</p>
             <div id="errorMessage" class="error"></div>
+            <div id="successMessage" class="success"></div>
             <form onsubmit="handleLogin(event)">
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" required placeholder="admin@o2coffee.com">
+                    <input type="email" id="email" required placeholder="o2coffee@gmail.com">
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
@@ -181,13 +196,15 @@
             <div class="menu-section">
                 <h2>Quick Actions</h2>
                 <div class="card">
-                    <p>To manage your menu, please use the local development environment:</p>
-                    <code
-                        style="display: block; background: #e9ecef; padding: 10px; border-radius: 5px; margin-top: 10px;">
-                        npm run dev
-                    </code>
+                    <p><strong>✅ You are logged in!</strong></p>
+                    <p style="margin-top: 15px;">To manage your menu, use the local development environment:</p>
+                    <code>npm run dev</code>
                     <p style="margin-top: 10px; font-size: 14px; color: #6c757d;">
                         Then navigate to <strong>localhost:3000/admin</strong>
+                    </p>
+                    <p style="margin-top: 15px; font-size: 14px; color: #6c757d;">
+                        The full admin dashboard with category and product management is available in your local
+                        development environment.
                     </p>
                 </div>
             </div>
@@ -229,16 +246,33 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const errorDiv = document.getElementById('errorMessage');
+            const successDiv = document.getElementById('successMessage');
             const loginBtn = document.getElementById('loginBtn');
 
             errorDiv.classList.remove('show');
+            successDiv.classList.remove('show');
             loginBtn.disabled = true;
             loginBtn.textContent = 'Signing in...';
 
             try {
                 await signInWithEmailAndPassword(auth, email, password);
+                successDiv.textContent = 'Login successful! Welcome to O2 Menu Admin.';
+                successDiv.classList.add('show');
             } catch (error) {
-                errorDiv.textContent = 'Invalid email or password. Please try again.';
+                console.error('Login error:', error);
+                let errorMessage = 'Invalid email or password. Please try again.';
+
+                if (error.code === 'auth/user-not-found') {
+                    errorMessage = 'No account found with this email. Please check your email or create an account in Firebase Console.';
+                } else if (error.code === 'auth/wrong-password') {
+                    errorMessage = 'Incorrect password. Please try again.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Invalid email format.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMessage = 'Too many failed login attempts. Please try again later.';
+                }
+
+                errorDiv.textContent = errorMessage;
                 errorDiv.classList.add('show');
                 loginBtn.disabled = false;
                 loginBtn.textContent = 'Sign In';
@@ -248,6 +282,7 @@
         // Logout handler
         window.handleLogout = async () => {
             await signOut(auth);
+            document.getElementById('successMessage').classList.remove('show');
         };
     </script>
 </body>
