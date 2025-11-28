@@ -4,6 +4,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 const nextConfig: NextConfig = {
   output: 'export',
+  trailingSlash: true,
   // Only use basePath in production (GitHub Pages)
   ...(isProd && { basePath: '/o2menu' }),
   ...(isProd && { assetPrefix: '/o2menu' }),

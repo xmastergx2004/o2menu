@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { getAssetPath } from "@/lib/utils";
 
-export default function LoadingScreen({ onFinished }: { onFinished: () => void }) {
+export default function LoadingScreen({ onFinished }: { onFinished?: () => void }) {
     const [isFading, setIsFading] = useState(false);
 
     useEffect(() => {
@@ -11,7 +11,7 @@ export default function LoadingScreen({ onFinished }: { onFinished: () => void }
             // Add a small delay for smooth UX
             setTimeout(() => {
                 setIsFading(true);
-                setTimeout(onFinished, 500); // Wait for fade out animation
+                if (onFinished) setTimeout(onFinished, 500); // Wait for fade out animation
             }, 1000);
         };
 

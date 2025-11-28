@@ -1,14 +1,3 @@
-import {
-    FaMugHot,
-    FaGlassWater,
-    FaIceCream,
-    FaCookie,
-    FaLeaf,
-    FaBreadSlice,
-    FaWineGlass
-} from "react-icons/fa6";
-import { BiSolidCoffeeBean } from "react-icons/bi";
-import { GiCoffeeCup, GiSodaCan } from "react-icons/gi";
 import { getAssetPath } from "@/lib/utils";
 
 export interface MenuItem {
@@ -20,7 +9,7 @@ export interface MenuItem {
 
 export interface MenuCategory {
     category: string;
-    icon: React.ReactNode;
+    icon: string; // Changed from React.ReactNode to string
     image?: string;
     items: MenuItem[];
 }
@@ -28,7 +17,7 @@ export interface MenuCategory {
 export const menuData: MenuCategory[] = [
     {
         category: "SICAK KAHVELER",
-        icon: <FaMugHot />,
+        icon: "FaMugHot",
         image: getAssetPath("/o2photos/sicakkahveler.jpg"),
         items: [
             { name: "Espresso", price: "₺75,00", description: "Yoğun ve zengin aromalı klasik İtalyan kahvesi.", image: getAssetPath("/o2photos/espresso.jpg") },
@@ -48,7 +37,7 @@ export const menuData: MenuCategory[] = [
     },
     {
         category: "SPECIAL KAHVELER",
-        icon: <BiSolidCoffeeBean />,
+        icon: "BiSolidCoffeeBean",
         image: getAssetPath("/o2photos/specialkahveler.jpg"),
         items: [
             { name: "Caramello Latte", price: "₺140,00", description: "Karamel aromalı sıcak latte.", image: getAssetPath("/o2photos/hotcaranellolatte.png") },
@@ -65,7 +54,7 @@ export const menuData: MenuCategory[] = [
     },
     {
         category: "BİTKİ ÇAYLARI",
-        icon: <FaLeaf />,
+        icon: "FaLeaf",
         image: getAssetPath("/o2photos/BİTKİÇAYLARI.jpg"),
         items: [
             { name: "Detox Tea", price: "₺150,00", description: "Vücudunuzu arındıran özel bitki karışımı.", image: getAssetPath("/o2photos/detoxcay.png") },
@@ -79,7 +68,7 @@ export const menuData: MenuCategory[] = [
     },
     {
         category: "SICAK İÇECEKLER",
-        icon: <GiCoffeeCup />,
+        icon: "GiCoffeeCup",
         image: getAssetPath("/o2photos/SICAK İÇECEKLER.jpg"),
         items: [
             { name: "Matcha Çayı", price: "₺170,00", description: "Japon yeşil çay tozu ile hazırlanan özel içecek.", image: getAssetPath("/o2photos/MatchaÇayı.jpg") },
@@ -91,7 +80,7 @@ export const menuData: MenuCategory[] = [
     },
     {
         category: "SOĞUK KAHVELER",
-        icon: <FaGlassWater />,
+        icon: "FaGlassWater",
         image: getAssetPath("/o2photos/SOĞUK KAHVELER.jpg"),
         items: [
             { name: "Ice Americano", price: "₺120,00", description: "Buzlu su ve espresso ile serinletici kahve.", image: getAssetPath("/o2photos/Iced_Americano.jpg") },
@@ -115,7 +104,7 @@ export const menuData: MenuCategory[] = [
     },
     {
         category: "MILKSHAKE",
-        icon: <FaGlassWater />,
+        icon: "FaGlassWater",
         image: getAssetPath("/o2photos/milkshake.jpg"),
         items: [
             { name: "Çikolata", price: "₺140,00", description: "Yoğun çikolatalı milkshake.", image: getAssetPath("/o2photos/Çikolatamilkshake.jpg") },
@@ -127,7 +116,7 @@ export const menuData: MenuCategory[] = [
     },
     {
         category: "FROZEN",
-        icon: <FaIceCream />,
+        icon: "FaIceCream",
         image: getAssetPath("/o2photos/forzen.jpg"),
         items: [
             { name: "Çilek", price: "₺140,00", description: "Buzlu çilek ferahlatlığı.", image: getAssetPath("/o2photos/cilekforzen.jpg") },
@@ -141,7 +130,7 @@ export const menuData: MenuCategory[] = [
     },
     {
         category: "SPECIALS",
-        icon: <FaWineGlass />,
+        icon: "FaWineGlass",
         items: [
             { name: "Amsterdam", price: "₺150,00", description: "O2 Coffee imza kokteyli." },
             { name: "Mono", price: "₺150,00", description: "O2 Coffee imza kokteyli." },
@@ -153,7 +142,7 @@ export const menuData: MenuCategory[] = [
     },
     {
         category: "SANDVİÇLER",
-        icon: <FaBreadSlice />,
+        icon: "FaBreadSlice",
         image: getAssetPath("/o2photos/SANDVİÇLER.jpg"),
         items: [
             { name: "Beyaz Peynirli Panini", price: "₺140,00", description: "Taze beyaz peynir ve yeşilliklerle.", image: getAssetPath("/o2photos/Beyaz Peynirli Panini.jpg") },
@@ -164,7 +153,7 @@ export const menuData: MenuCategory[] = [
     },
     {
         category: "TATLILAR",
-        icon: <FaCookie />,
+        icon: "FaCookie",
         image: getAssetPath("/o2photos/TATLILAR.jpg"),
         items: [
             { name: "Frambuazlı Cheesecake", price: "₺150,00", description: "Frambuaz soslu cheesecake.", image: getAssetPath("/o2photos/Frambuazlı Cheesecake.png") },
@@ -187,7 +176,7 @@ export const menuData: MenuCategory[] = [
     },
     {
         category: "YÖRESEL KAHVELER",
-        icon: <BiSolidCoffeeBean />,
+        icon: "BiSolidCoffeeBean",
         image: getAssetPath("/o2photos/YÖRESEL KAHVELER.jpg"),
         items: [
             { name: "Brezilya Santos", price: "₺120,00", description: "Yumuşak içimli Brezilya kahvesi.", image: getAssetPath("/o2photos/Brezilya Santos.png") },
@@ -198,7 +187,7 @@ export const menuData: MenuCategory[] = [
     },
     {
         category: "SOFT İÇECEKLER",
-        icon: <GiSodaCan />,
+        icon: "GiSodaCan",
         image: getAssetPath("/o2photos/SOFT İÇECEKLER.jpg"),
         items: [
             { name: "C Max Kivi Soda", price: "₺50,00", description: "Serinletici içecek.", image: getAssetPath("/o2photos/C Max Kivi Soda.jpg") },
@@ -217,7 +206,7 @@ export const menuData: MenuCategory[] = [
     },
     {
         category: "DONDURMALAR",
-        icon: <FaIceCream />,
+        icon: "FaIceCream",
         image: getAssetPath("/o2photos/DONDURMALAR.jpg"),
         items: [
             { name: "Çikolatalı Dondurma", price: "₺25,00", description: "Top dondurma.", image: getAssetPath("/o2photos/Çikolatalı Dondurma.jpg") },
@@ -227,3 +216,4 @@ export const menuData: MenuCategory[] = [
         ]
     }
 ];
+

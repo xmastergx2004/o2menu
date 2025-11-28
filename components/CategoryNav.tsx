@@ -1,5 +1,6 @@
 import { MenuCategory } from "@/data/menuData";
 import Image from "next/image";
+import IconMapper from "./IconMapper";
 
 interface CategoryNavProps {
     categories: MenuCategory[];
@@ -34,7 +35,7 @@ export default function CategoryNav({ categories, activeCategory, onSelectCatego
                             ) : (
                                 <>
                                     <span className={`text-4xl transition-transform duration-300 ${activeCategory === cat.category ? 'scale-110' : ''}`}>
-                                        {cat.icon}
+                                        <IconMapper iconName={cat.icon} />
                                     </span>
                                     <span className="text-sm tracking-wide text-center px-2">{cat.category}</span>
                                 </>
