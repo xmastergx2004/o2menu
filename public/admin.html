@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>O2 Menu Admin</title>
+    <title>O2 Coffee - Admin Panel</title>
     <style>
         * {
             margin: 0;
@@ -16,13 +16,17 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+        }
+
+        .login-container {
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 100vh;
             padding: 20px;
         }
 
-        .container {
+        .login-box {
             background: white;
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -31,10 +35,43 @@
             width: 100%;
         }
 
+        .admin-container {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .admin-container.show {
+            display: block;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
         h1 {
             color: #2c3e50;
-            margin-bottom: 10px;
             font-size: 28px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #2c3e50;
+            font-size: 18px;
+            margin-bottom: 15px;
         }
 
         .subtitle {
@@ -55,24 +92,33 @@
             font-size: 14px;
         }
 
-        input {
+        input,
+        select,
+        textarea {
             width: 100%;
             padding: 12px 16px;
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-size: 16px;
             transition: all 0.3s;
+            font-family: inherit;
         }
 
-        input:focus {
+        input:focus,
+        select:focus,
+        textarea:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
         button {
-            width: 100%;
-            padding: 14px;
+            padding: 12px 24px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
@@ -97,9 +143,24 @@
             cursor: not-allowed;
         }
 
-        .error {
-            background: #fee;
-            color: #c33;
+        .btn-secondary {
+            background: #6c757d;
+            margin-left: 10px;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .error,
+        .success {
             padding: 12px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -107,58 +168,150 @@
             display: none;
         }
 
-        .error.show {
+        .error {
+            background: #fee;
+            color: #c33;
+        }
+
+        .error.show,
+        .success.show {
             display: block;
         }
 
-        .admin-panel {
+        .success {
+            background: #efe;
+            color: #3c3;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .tab-content {
             display: none;
         }
 
-        .admin-panel.show {
+        .tab-content.active {
             display: block;
         }
 
-        .menu-section {
-            margin-bottom: 30px;
+        .item-list {
+            display: grid;
+            gap: 15px;
         }
 
-        .menu-section h2 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 20px;
-        }
-
-        .card {
+        .item-card {
             background: #f8f9fa;
             padding: 20px;
             border-radius: 10px;
-            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .btn-secondary {
-            background: #6c757d;
-            margin-top: 10px;
+        .item-info h4 {
+            color: #2c3e50;
+            margin-bottom: 5px;
         }
 
-        .btn-danger {
-            background: #dc3545;
+        .item-info p {
+            color: #7f8c8d;
+            font-size: 14px;
         }
 
-        .logout-btn {
-            background: #6c757d;
+        .item-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <!-- Login Form -->
-        <div id="loginForm">
-            <h1>O2 Menu Admin</h1>
+    <!-- Login Form -->
+    <div id="loginContainer" class="login-container">
+        <div class="login-box">
+            <h1>O2 Coffee Admin</h1>
             <p class="subtitle">Sign in to manage your menu</p>
-            <div id="errorMessage" class="error"></div>
+            <div id="loginError" class="error"></div>
             <form onsubmit="handleLogin(event)">
                 <div class="form-group">
                     <label for="email">Email</label>
@@ -166,31 +319,115 @@
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" required placeholder="Enter your password">
+                    <input type="password" id="password" required placeholder="Enter password">
                 </div>
                 <button type="submit" id="loginBtn">Sign In</button>
             </form>
         </div>
+    </div>
 
-        <!-- Admin Panel -->
-        <div id="adminPanel" class="admin-panel">
-            <button onclick="handleLogout()" class="logout-btn">Logout</button>
-            <h1>Admin Dashboard</h1>
-            <p class="subtitle">Manage your menu items</p>
+    <!-- Admin Panel -->
+    <div id="adminContainer" class="admin-container">
+        <div class="header">
+            <h1>O2 Coffee - Menu Management</h1>
+            <button onclick="handleLogout()" class="btn-secondary">Logout</button>
+        </div>
 
-            <div class="menu-section">
-                <h2>Quick Actions</h2>
-                <div class="card">
-                    <p>To manage your menu, please use the local development environment:</p>
-                    <code
-                        style="display: block; background: #e9ecef; padding: 10px; border-radius: 5px; margin-top: 10px;">
-                        npm run dev
-                    </code>
-                    <p style="margin-top: 10px; font-size: 14px; color: #6c757d;">
-                        Then navigate to <strong>localhost:3000/admin</strong>
-                    </p>
+        <div id="message" class="success"></div>
+        <div id="errorMsg" class="error"></div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('categories')">Categories</div>
+            <div class="tab" onclick="switchTab('products')">Products</div>
+        </div>
+
+        <!-- Categories Tab -->
+        <div id="categoriesTab" class="tab-content active">
+            <div class="section">
+                <h2>Manage Categories</h2>
+                <button onclick="showAddCategoryModal()">+ Add New Category</button>
+                <div id="categoriesList" class="item-list" style="margin-top: 20px;">
+                    <div class="loading">Loading categories...</div>
                 </div>
             </div>
+        </div>
+
+        <!-- Products Tab -->
+        <div id="productsTab" class="tab-content">
+            <div class="section">
+                <h2>Manage Products</h2>
+                <button onclick="showAddProductModal()">+ Add New Product</button>
+                <div id="productsList" class="item-list" style="margin-top: 20px;">
+                    <div class="loading">Loading products...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Category Modal -->
+    <div id="categoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="categoryModalTitle">Add Category</h3>
+                <button class="close-btn" onclick="closeCategoryModal()">×</button>
+            </div>
+            <form onsubmit="handleCategorySubmit(event)">
+                <input type="hidden" id="categoryId">
+                <div class="form-group">
+                    <label for="categoryName">Category Name</label>
+                    <input type="text" id="categoryName" required placeholder="e.g., SICAK KAHVELER">
+                </div>
+                <div class="form-group">
+                    <label for="categoryIcon">Icon Name</label>
+                    <input type="text" id="categoryIcon" required placeholder="e.g., FaMugHot">
+                    <small style="color: #7f8c8d;">Available: FaMugHot, FaGlassWater, FaIceCream, FaCookie, FaLeaf,
+                        FaBreadSlice, FaWineGlass, BiSolidCoffeeBean, GiCoffeeCup, GiSodaCan</small>
+                </div>
+                <div class="form-group">
+                    <label for="categoryImage">Image URL (optional)</label>
+                    <input type="url" id="categoryImage" placeholder="https://...">
+                </div>
+                <button type="submit" id="categorySaveBtn">Save Category</button>
+                <button type="button" class="btn-secondary" onclick="closeCategoryModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add/Edit Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="productModalTitle">Add Product</h3>
+                <button class="close-btn" onclick="closeProductModal()">×</button>
+            </div>
+            <form onsubmit="handleProductSubmit(event)">
+                <input type="hidden" id="productCategoryId">
+                <input type="hidden" id="productIndex">
+                <div class="form-group">
+                    <label for="productCategory">Category</label>
+                    <select id="productCategory" required>
+                        <option value="">Select category...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="productName">Product Name</label>
+                    <input type="text" id="productName" required placeholder="e.g., Espresso">
+                </div>
+                <div class="form-group">
+                    <label for="productPrice">Price</label>
+                    <input type="text" id="productPrice" required placeholder="e.g., ₺75,00">
+                </div>
+                <div class="form-group">
+                    <label for="productDescription">Description (optional)</label>
+                    <textarea id="productDescription" placeholder="Product description..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="productImage">Image URL (optional)</label>
+                    <input type="url" id="productImage" placeholder="https://...">
+                </div>
+                <button type="submit" id="productSaveBtn">Save Product</button>
+                <button type="button" class="btn-secondary" onclick="closeProductModal()">Cancel</button>
+            </form>
         </div>
     </div>
 
@@ -198,6 +435,7 @@
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: "AIzaSyCjV3BSpySgLbxRtR_3mVIKjp5YwaZhAno",
@@ -205,30 +443,35 @@
             projectId: "o2coffee",
             storageBucket: "o2coffee.firebasestorage.app",
             messagingSenderId: "539698857280",
-            appId: "1:539698857280:web:7fa22e310ea37426a5a6a5",
-            measurementId: "G-116HDNXBHK"
+            appId: "1:539698857280:web:7fa22e310ea37426a5a6a5"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
 
-        // Check auth state
+        window.db = db;
+        window.auth = auth;
+        window.categories = [];
+
+        // Auth state
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                document.getElementById('loginForm').style.display = 'none';
-                document.getElementById('adminPanel').classList.add('show');
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('adminContainer').classList.add('show');
+                loadCategories();
             } else {
-                document.getElementById('loginForm').style.display = 'block';
-                document.getElementById('adminPanel').classList.remove('show');
+                document.getElementById('loginContainer').style.display = 'flex';
+                document.getElementById('adminContainer').classList.remove('show');
             }
         });
 
-        // Login handler
+        // Login
         window.handleLogin = async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const errorDiv = document.getElementById('errorMessage');
+            const errorDiv = document.getElementById('loginError');
             const loginBtn = document.getElementById('loginBtn');
 
             errorDiv.classList.remove('show');
@@ -238,17 +481,283 @@
             try {
                 await signInWithEmailAndPassword(auth, email, password);
             } catch (error) {
-                errorDiv.textContent = 'Invalid email or password. Please try again.';
+                errorDiv.textContent = 'Invalid email or password.';
                 errorDiv.classList.add('show');
                 loginBtn.disabled = false;
                 loginBtn.textContent = 'Sign In';
             }
         };
 
-        // Logout handler
+        // Logout
         window.handleLogout = async () => {
             await signOut(auth);
         };
+
+        // Load categories
+        window.loadCategories = async () => {
+            try {
+                const q = query(collection(db, 'categories'), orderBy('order', 'asc'));
+                const snapshot = await getDocs(q);
+                window.categories = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                renderCategories();
+                renderProducts();
+                populateCategorySelect();
+            } catch (error) {
+                console.error('Error loading categories:', error);
+                showError('Failed to load data');
+            }
+        };
+
+        // Render categories
+        function renderCategories() {
+            const list = document.getElementById('categoriesList');
+            if (window.categories.length === 0) {
+                list.innerHTML = '<div class="loading">No categories yet. Add your first category!</div>';
+                return;
+            }
+
+            list.innerHTML = window.categories.map(cat => `
+                <div class="item-card">
+                    <div class="item-info">
+                        <h4>${cat.category}</h4>
+                        <p>Icon: ${cat.icon} | Items: ${cat.items?.length || 0}</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-small" onclick="editCategory('${cat.id}')">Edit</button>
+                        <button class="btn-small btn-danger" onclick="deleteCategory('${cat.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render products
+        function renderProducts() {
+            const list = document.getElementById('productsList');
+            const products = [];
+
+            window.categories.forEach(cat => {
+                if (cat.items) {
+                    cat.items.forEach((item, index) => {
+                        products.push({ ...item, categoryId: cat.id, categoryName: cat.category, index });
+                    });
+                }
+            });
+
+            if (products.length === 0) {
+                list.innerHTML = '<div class="loading">No products yet. Add your first product!</div>';
+                return;
+            }
+
+            list.innerHTML = products.map(prod => `
+                <div class="item-card">
+                    <div class="item-info">
+                        <h4>${prod.name}</h4>
+                        <p>${prod.categoryName} | ${prod.price}</p>
+                    </div>
+                    <div class="item-actions">
+                        <button class="btn-small" onclick="editProduct('${prod.categoryId}', ${prod.index})">Edit</button>
+                        <button class="btn-small btn-danger" onclick="deleteProduct('${prod.categoryId}', ${prod.index})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Populate category select
+        function populateCategorySelect() {
+            const select = document.getElementById('productCategory');
+            select.innerHTML = '<option value="">Select category...</option>' +
+                window.categories.map(cat => `<option value="${cat.id}">${cat.category}</option>`).join('');
+        }
+
+        // Tab switching
+        window.switchTab = (tab) => {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+
+            event.target.classList.add('active');
+            document.getElementById(tab + 'Tab').classList.add('active');
+        };
+
+        // Category modal
+        window.showAddCategoryModal = () => {
+            document.getElementById('categoryModalTitle').textContent = 'Add Category';
+            document.getElementById('categoryId').value = '';
+            document.getElementById('categoryName').value = '';
+            document.getElementById('categoryIcon').value = '';
+            document.getElementById('categoryImage').value = '';
+            document.getElementById('categoryModal').classList.add('show');
+        };
+
+        window.editCategory = (id) => {
+            const cat = window.categories.find(c => c.id === id);
+            if (!cat) return;
+
+            document.getElementById('categoryModalTitle').textContent = 'Edit Category';
+            document.getElementById('categoryId').value = cat.id;
+            document.getElementById('categoryName').value = cat.category;
+            document.getElementById('categoryIcon').value = cat.icon;
+            document.getElementById('categoryImage').value = cat.image || '';
+            document.getElementById('categoryModal').classList.add('show');
+        };
+
+        window.closeCategoryModal = () => {
+            document.getElementById('categoryModal').classList.remove('show');
+        };
+
+        window.handleCategorySubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('categorySaveBtn');
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+
+            try {
+                const id = document.getElementById('categoryId').value;
+                const data = {
+                    category: document.getElementById('categoryName').value,
+                    icon: document.getElementById('categoryIcon').value,
+                    image: document.getElementById('categoryImage').value || undefined,
+                    items: id ? window.categories.find(c => c.id === id).items : [],
+                    order: id ? window.categories.find(c => c.id === id).order : window.categories.length
+                };
+
+                if (id) {
+                    await updateDoc(doc(db, 'categories', id), data);
+                    showSuccess('Category updated successfully!');
+                } else {
+                    await addDoc(collection(db, 'categories'), data);
+                    showSuccess('Category added successfully!');
+                }
+
+                closeCategoryModal();
+                await loadCategories();
+            } catch (error) {
+                console.error('Error saving category:', error);
+                showError('Failed to save category');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Save Category';
+            }
+        };
+
+        window.deleteCategory = async (id) => {
+            if (!confirm('Are you sure you want to delete this category? All products in this category will be deleted.')) return;
+
+            try {
+                await deleteDoc(doc(db, 'categories', id));
+                showSuccess('Category deleted successfully!');
+                await loadCategories();
+            } catch (error) {
+                console.error('Error deleting category:', error);
+                showError('Failed to delete category');
+            }
+        };
+
+        // Product modal
+        window.showAddProductModal = () => {
+            document.getElementById('productModalTitle').textContent = 'Add Product';
+            document.getElementById('productCategoryId').value = '';
+            document.getElementById('productIndex').value = '';
+            document.getElementById('productCategory').value = '';
+            document.getElementById('productName').value = '';
+            document.getElementById('productPrice').value = '';
+            document.getElementById('productDescription').value = '';
+            document.getElementById('productImage').value = '';
+            document.getElementById('productModal').classList.add('show');
+        };
+
+        window.editProduct = (categoryId, index) => {
+            const cat = window.categories.find(c => c.id === categoryId);
+            if (!cat || !cat.items[index]) return;
+
+            const product = cat.items[index];
+            document.getElementById('productModalTitle').textContent = 'Edit Product';
+            document.getElementById('productCategoryId').value = categoryId;
+            document.getElementById('productIndex').value = index;
+            document.getElementById('productCategory').value = categoryId;
+            document.getElementById('productName').value = product.name;
+            document.getElementById('productPrice').value = product.price;
+            document.getElementById('productDescription').value = product.description || '';
+            document.getElementById('productImage').value = product.image || '';
+            document.getElementById('productModal').classList.add('show');
+        };
+
+        window.closeProductModal = () => {
+            document.getElementById('productModal').classList.remove('show');
+        };
+
+        window.handleProductSubmit = async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('productSaveBtn');
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+
+            try {
+                const categoryId = document.getElementById('productCategory').value;
+                const index = document.getElementById('productIndex').value;
+                const cat = window.categories.find(c => c.id === categoryId);
+
+                const product = {
+                    name: document.getElementById('productName').value,
+                    price: document.getElementById('productPrice').value,
+                    description: document.getElementById('productDescription').value || undefined,
+                    image: document.getElementById('productImage').value || undefined
+                };
+
+                const items = [...(cat.items || [])];
+                if (index !== '') {
+                    items[parseInt(index)] = product;
+                } else {
+                    items.push(product);
+                }
+
+                await updateDoc(doc(db, 'categories', categoryId), { items });
+                showSuccess('Product saved successfully!');
+                closeProductModal();
+                await loadCategories();
+            } catch (error) {
+                console.error('Error saving product:', error);
+                showError('Failed to save product');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Save Product';
+            }
+        };
+
+        window.deleteProduct = async (categoryId, index) => {
+            if (!confirm('Are you sure you want to delete this product?')) return;
+
+            try {
+                const cat = window.categories.find(c => c.id === categoryId);
+                const items = [...cat.items];
+                items.splice(index, 1);
+
+                await updateDoc(doc(db, 'categories', categoryId), { items });
+                showSuccess('Product deleted successfully!');
+                await loadCategories();
+            } catch (error) {
+                console.error('Error deleting product:', error);
+                showError('Failed to delete product');
+            }
+        };
+
+        // Messages
+        function showSuccess(msg) {
+            const div = document.getElementById('message');
+            div.textContent = msg;
+            div.classList.add('show');
+            setTimeout(() => div.classList.remove('show'), 3000);
+        }
+
+        function showError(msg) {
+            const div = document.getElementById('errorMsg');
+            div.textContent = msg;
+            div.classList.add('show');
+            setTimeout(() => div.classList.remove('show'), 3000);
+        }
+
+        window.showSuccess = showSuccess;
+        window.showError = showError;
     </script>
 </body>
 
