@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   // Only use basePath in production (GitHub Pages)
   ...(isProd && { basePath: '/o2menu' }),
-  ...(isProd && { assetPrefix: '/o2menu' }),
   images: {
     unoptimized: true,
   },
